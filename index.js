@@ -34,6 +34,7 @@ app.use(helmet());
 const authRouter = require("./routes/authRoutes");
 const hallRouter = require("./routes/hallRoutes");
 const bookingRouter = require('./routes/bookingRoutes');
+const { default: mongoose } = require('mongoose');
 app.use(authRouter);
 app.use(hallRouter);
 app.use(bookingRouter);
@@ -46,7 +47,10 @@ app.get("/", (req, res) => {
 // Start Server
 const start = async () => {
   try {
-    console.log("Database Connected");
+    //console.log("Database Connected");
+    const url =process.env.MONGODB
+    await mongoose.connect(url)
+    console.log('Database connected')
     const PORT = process.env.PORT || 5000;
     app.listen(PORT, () => {
       console.log(`Server Started at Port ${PORT}`);
