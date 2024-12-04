@@ -11,9 +11,17 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // CORS Configuration
 const corsOptions = {
-  origin: '*',
+  origin: (origin, callback) => {
+    const allowedOrigins = ['http://localhost:3000', 'https://your-frontend-domain.com'];
+    if (allowedOrigins.includes(origin) || !origin) {
+      callback(null, origin);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   methods: 'GET,POST,PATCH,PUT,DELETE,OPTIONS',
   allowedHeaders: ['Origin', 'Content-Type', 'X-Auth-Token'],
+  credentials: true, // Allow credentials
 };
 
 // Middleware
