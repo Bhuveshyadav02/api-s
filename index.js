@@ -10,7 +10,7 @@ const path = require('path'); // Importing the path module
 app.use(express.static(path.join(__dirname, 'public')));
 
 // CORS Configuration
-const corsOptions = {
+/*const corsOptions = {
   origin: (origin, callback) => {
     const allowedOrigins = ['http://localhost:3000', 'https://your-frontend-domain.com'];
     if (allowedOrigins.includes(origin) || !origin) {
@@ -22,6 +22,21 @@ const corsOptions = {
   methods: 'GET,POST,PATCH,PUT,DELETE,OPTIONS',
   allowedHeaders: ['Origin', 'Content-Type', 'X-Auth-Token'],
   credentials: true, // Allow credentials
+};*/
+const corsOptions = {
+  origin: (origin, callback) => {
+    const allowedOrigins = ['http://localhost:3000', ''];
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: 'GET,POST,PATCH,PUT,DELETE,OPTIONS',
+  allowedHeaders: ['Origin', 'Content-Type', 'X-Auth-Token', 'Authorization'], // Ensure Authorization is here
+  credentials: true, // Allow cookies & Authorization headers
+  preflightContinue: false,
+  optionsSuccessStatus: 204, // Ensures successful preflight response
 };
 
 // Middleware
@@ -39,7 +54,7 @@ app.use(authRouter);
 app.use(hallRouter);
 app.use(bookingRouter);
 
-// Health Check Route
+//Health Check Route
 app.get("/", (req, res) => {
   res.send("Server is working");
 });

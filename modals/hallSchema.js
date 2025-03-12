@@ -1,5 +1,5 @@
 const moongooese=require('mongoose')
-
+/*Hall schema  */
 const hallSchema= new moongooese.Schema({
 name:{
 type:String,
